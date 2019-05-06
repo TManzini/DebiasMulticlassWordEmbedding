@@ -1,0 +1,28 @@
+{
+	"definite_sets":[
+		["he", "she"],
+		["his", "hers"],
+		["son", "daughter"],
+		["father", "mother"],
+		["male", "female"],
+		["boy", "girl"],
+		["uncle", "aunt"]
+	],
+	"analogy_templates":
+	{
+		"role": {
+			"man"   : ["manager", "executive", "doctor", "lawyer", "programmer", "scientist", "soldier", "supervisor", "rancher", "janitor", "firefighter", "officer"],
+			"woman" : ["secretary", "nurse", "clerk", "artist", "homemaker", "dancer", "singer", "librarian", "maid", "hairdresser", "stylist", "receptionist", "counselor"]
+		}
+	}, 
+	"eval_targets":[
+		["he", "she"],
+		["his", "hers"],
+		["son", "daughter"],
+		["father", "mother"],
+		["male", "female"],
+		["boy", "girl"],
+		["uncle", "aunt"]
+	], 
+	"testTerms":["chair", "house", "supervisor", "secretary", "loud", "weak"]
+}

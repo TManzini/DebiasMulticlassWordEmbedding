@@ -1,0 +1,25 @@
+{
+	"definite_sets":[
+		["judaism", "christianity", "islam"],
+		["jew", "christian", "muslim"],
+        ["synagogue", "church", "mosque"],
+        ["torah", "bible", "quran"],
+        ["rabbi", "priest", "imam"]
+	],
+	"analogy_templates":
+	{
+		"attribute": {
+			"jew"       : ["greedy", "cheap", "hairy", "liberal"],
+    		"christian" : ["judgemental", "conservative", "familial"],
+    		"muslim"    : ["violent", "terrorist", "dirty", "uneducated"]
+		}
+	},
+	"eval_targets":[
+		["judaism", "christianity", "islam"],
+		["jew", "christian", "muslim"],
+        ["synagogue", "church", "mosque"],
+        ["torah", "bible", "quran"],
+        ["rabbi", "priest", "imam"]
+	], 
+	"testTerms":["chair", "house", "greedy", "terrorist", "dirty", "greedy"]
+}

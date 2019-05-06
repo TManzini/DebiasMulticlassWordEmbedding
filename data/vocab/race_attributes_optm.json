@@ -1,0 +1,19 @@
+{
+	"definite_sets":[
+		["black", "caucasian", "asian"],
+        ["africa", "america", "asia"]
+    ],
+	"analogy_templates":
+	{
+		"role": {
+			"caucasian": ["manager", "executive", "redneck", "hillbilly", "leader", "farmer"],
+			"asian"    : ["doctor", "engineer", "laborer", "teacher"],
+			"black"    : ["slave", "musician", "runner", "criminal", "homeless"]
+		}
+	}, 
+	"eval_targets":[
+		["black", "caucasian", "asian"],
+        ["africa", "america", "asia"]
+	], 
+	"testTerms":["chair", "house", "smart", "criminal", "executive", "farmer"]
+}
