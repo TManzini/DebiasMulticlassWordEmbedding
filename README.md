@@ -42,4 +42,17 @@ python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/voc
 ```
 
 ## Downstream
+In order to replicate our results you must use the embeddings that were generated in the Debiasing section (or you can simply download our pretrained and predebiased embeddings). These embeddings should be stored in ./Downstream/data/wvs/. 
 
+Additionally, you must download the (conll2003 dataset)[https://www.clips.uantwerpen.be/conll2003/ner/]. This data should be segmented into train, test, and val files which should be stored in ./Downstream/data/conll2003/. 
+
+After these files have been placed in the appropriate locations, you can replicate our results by running the ipython notebook ./Downstream/BiasEvalPipelineRunner.ipynb
+
+## Requirements
+The following python packages are required.
+* numpy
+* scipy
+* gensim
+* sklearn
+* pytorch
+* jupyter
