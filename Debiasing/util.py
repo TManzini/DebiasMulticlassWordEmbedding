@@ -73,8 +73,17 @@ def pruneWordVecs(wordVecs):
     newWordVecs = {}
     for word, vec in wordVecs.items():
         valid=True
-        if(not all([c.isalpha() for c in word])):
+        if(not isValidWord(word)):
             valid = False
         if(valid):
             newWordVecs[word] = vec
     return newWordVecs
+
+def isValidWord(word):
+    return all([c.isalpha() for c in word])
+
+def listContainsMultiple(source, target):
+    for t in target:
+        if(source[0] in t and source[1] in t):
+            return True
+    return False

@@ -1,0 +1,5 @@
+data/corpus/*
+data/w2vs/*
+data/reddit.l2/*
+output/*
+*.pyc

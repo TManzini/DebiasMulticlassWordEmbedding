@@ -5,6 +5,7 @@ import os
 
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
+from util import isValidWord
 
 LINK_REG = re.compile(r'\[ ([^[\]()]*) \] \( ([^[\]()]*) \)')
 URL_REG = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
@@ -61,10 +62,11 @@ if __name__ == "__main__":
 			print "Saving vectors to disk"
 			f = open(W2V_OUTFILE, "w")
 			for word in model.wv.vocab:
-				try:
-					f.write(word + " " + " ".join([str(float(x)) for x in model.wv[word]]) + "\n")
-				except UnicodeEncodeError as e:
-					pass
+				if(isValidWord(word)):
+					try:
+						f.write(word + " " + " ".join([str(float(x)) for x in model.wv[word]]) + "\n")
+					except UnicodeEncodeError as e:
+						pass
 			f.close()
 		else:
 			print "Passing on", FILE, "because we found corresponding cleaned and w2v files"
