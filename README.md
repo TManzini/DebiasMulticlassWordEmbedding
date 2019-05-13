@@ -73,4 +73,5 @@ The following python packages are required (Python 2).
 * gensim
 * sklearn
 * pytorch
+* matplotlib
 * jupyter
