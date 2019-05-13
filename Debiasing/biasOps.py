@@ -159,15 +159,15 @@ def equalize_and_soften(vocab, words, eq_sets, bias_subspace, embedding_dim, l=0
         optimizer.zero_grad()
         
         if(verbose):
-            print "Loss @ Epoch #" + str(i) + ":", loss
+            print("Loss @ Epoch #" + str(i) + ":", loss)
 
     if(verbose):
-        print "Optimization Completed, normalizing vector transform"
+        print("Optimization Completed, normalizing vector transform")
 
     debiasedVectors = {}
     for i, w in enumerate(Words.t()):
         transformedVec = torch.mm(Transform, w.view(-1, 1))
-        debiasedVectors[vocabIndex[i]] = ( transformedVec / transformedVec.norm(p=2) ).detach().numpy()
+        debiasedVectors[vocabIndex[i]] = ( transformedVec / transformedVec.norm(p=2) ).detach().numpy().flatten()
 
     return debiasedVectors
 

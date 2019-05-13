@@ -7,7 +7,7 @@ The repository is broken into two components.
 1. Performing debiasing and MAC score calculations (./Debiasing)
 2. Downstream evaluation (./Downstream)
 
-## Debasing
+## Debiasing
 
 In order to run these files several data files need to be downloaded. 
 If you would like to replicate our results from scratch, you must download the following files.
@@ -50,8 +50,24 @@ Additionally, you must download the [conll2003 dataset](https://www.clips.uantwe
 
 After these files have been placed in the appropriate locations, you can replicate our results by running the ipython notebook ./Downstream/BiasEvalPipelineRunner.ipynb
 
+## Cluster Bias Analysis
+To run the cluster bias analysis (based on [Gonen and Goldberg (2019)](https://arxiv.org/pdf/1903.03862.pdf)), run the following:
+```
+python neighborAnalysis.py <biased embeddings> <debiased embeddings> <debiasing info> <targets>
+```
+
+For example:
+```
+python neighborAnalysis.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'output/data_race_attributes_optm_json_role_hardDebiasedEmbeddingsOut.w2v' 'data/vocab/race_attributes_optm.json' 'professions.json' --multi
+```
+Arguments/flags:
+- targets: a JSON file containing a list of target words to evaluate bias on, such as Bolukbasi's [`professions.json`](https://github.com/tolga-b/debiaswe/blob/master/data/professions.json)
+- `--bias_specific`: a JSON file containing a list of words that inherently contain bias (for example, he and she for gender) and should be ignored. For example, [here](https://github.com/tolga-b/debiaswe/blob/master/data/gender_specific_full.json]), or `data/vocab/religion_specific.json`.
+- `--multi`: Set for multiclass debiasing
+- `-v`: Verbose mode
+
 ## Requirements
-The following python packages are required.
+The following python packages are required (Python 2).
 * numpy
 * scipy
 * gensim
