@@ -3,9 +3,10 @@
 This repository contains the code that was written in support of the NAACL 2019 paper [Black is to Criminal as Caucasian is to Police:
 Detecting and Removing Multiclass Bias in Word Embeddings](https://arxiv.org/abs/1904.04047).
 
-The repository is broken into two components. 
-1. Performing debiasing and MAC score calculations (./Debiasing)
-2. Downstream evaluation (./Downstream)
+The repository has three main components. 
+1. Performing debiasing and MAC score calculations (./Debiasing/debias.py)
+2. Cluster bias analysis (./Debiasing/neighborAnalysis.py)
+3. Downstream evaluation (./Downstream/BiasEvalPipelineRunner.ipynb)
 
 ## Debiasing
 
@@ -43,13 +44,6 @@ This commmand performs hard & soft gender debiasing based on roles in the passed
 python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/vocab/gender_attributes_optm.json' role -v -hard -soft -printLimit 500
 ```
 
-## Downstream
-In order to replicate our results you must use the embeddings that were generated in the Debiasing section (or you can simply download our pretrained and predebiased embeddings). These embeddings should be stored in ./Downstream/data/wvs/. 
-
-Additionally, you must download the [conll2003 dataset](https://www.clips.uantwerpen.be/conll2003/ner/). This data should be segmented into train, test, and val files which should be stored in ./Downstream/data/conll2003/. 
-
-After these files have been placed in the appropriate locations, you can replicate our results by running the ipython notebook ./Downstream/BiasEvalPipelineRunner.ipynb
-
 ## Cluster Bias Analysis
 To run the cluster bias analysis (based on [Gonen and Goldberg (2019)](https://arxiv.org/pdf/1903.03862.pdf)), run the following:
 ```
@@ -65,6 +59,13 @@ Arguments/flags:
 - `--bias_specific`: a JSON file containing a list of words that inherently contain bias (for example, he and she for gender) and should be ignored. For example, [here](https://github.com/tolga-b/debiaswe/blob/master/data/gender_specific_full.json]), or `data/vocab/religion_specific.json`.
 - `--multi`: Set for multiclass debiasing
 - `-v`: Verbose mode
+
+## Downstream
+In order to replicate our results you must use the embeddings that were generated in the Debiasing section (or you can simply download our pretrained and predebiased embeddings). These embeddings should be stored in ./Downstream/data/wvs/. 
+
+Additionally, you must download the [conll2003 dataset](https://www.clips.uantwerpen.be/conll2003/ner/). This data should be segmented into train, test, and val files which should be stored in ./Downstream/data/conll2003/. 
+
+After these files have been placed in the appropriate locations, you can replicate our results by running the ipython notebook ./Downstream/BiasEvalPipelineRunner.ipynb
 
 ## Requirements
 The following python packages are required (Python 2).
