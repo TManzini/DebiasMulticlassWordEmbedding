@@ -8,7 +8,6 @@ import json
 import numpy as np
 from scipy.stats import spearmanr, pearsonr
 import matplotlib.pyplot as plt
-from gensim.models import KeyedVectors
 
 from util import preprocessWordVecs, removeWords, load_legacy_w2v
 from loader import load_def_sets
