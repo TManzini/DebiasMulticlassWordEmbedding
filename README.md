@@ -8,7 +8,7 @@ The repository has three main components.
 2. Cluster bias analysis (./Debiasing/neighborAnalysis.py)
 3. Downstream evaluation (./Downstream/BiasEvalPipelineRunner.ipynb)
 
-## Debiasing
+## Debiasing & MAC
 
 In order to run these files several data files need to be downloaded. 
 If you would like to replicate our results from scratch, you must download the following files.
@@ -60,7 +60,7 @@ Arguments/flags:
 - `--multi`: Set for multiclass debiasing
 - `-v`: Verbose mode
 
-## Downstream
+## Downstream Evaluation
 In order to replicate our results you must use the embeddings that were generated in the Debiasing section (or you can simply download our pretrained and predebiased embeddings). These embeddings should be stored in ./Downstream/data/wvs/. 
 
 Additionally, you must download the [conll2003 dataset](https://www.clips.uantwerpen.be/conll2003/ner/). This data should be segmented into train, test, and val files which should be stored in ./Downstream/data/conll2003/. 
