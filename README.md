@@ -13,10 +13,12 @@ In order to run these files several data files need to be downloaded.
 If you would like to replicate our results from scratch, you must download the following files.
 1. The Reddit.l2 Corpus
 
-If you would like to replicate our results we provide pretrained Word2Vec embeddings. Note that the results in the paper were on w2v_0.
+If you would like to replicate our results without training your own Word2Vec embeddings, we provide pretrained Word2Vec embeddings. Note that the results in the paper were on w2v_0.
 1. Pretrained Baseline Word2Vecs [w2v_0](https://drive.google.com/file/d/1IJdGfnKNaBLHP9hk0Ns7kReQwo_jR1xx/view?usp=sharing), [w2v_1](https://drive.google.com/file/d/1gDXFBFcOJuRTrTveBYnW5vH0uSSATwp_/view?usp=sharing), [w2v_2](https://drive.google.com/file/d/102grp_w69V91OuLIgY9aEXWbjEWAx3qD/view?usp=sharing), [w2v_3](https://drive.google.com/file/d/1IO6gucgEVxxzNPKrdARO6KDYbBBIwBjM/view?usp=sharing), [w2v_4](https://drive.google.com/file/d/1IhdRfHg373OYP_c-wsxEddxWIRpIlpNH/view?usp=sharing) 
 2. Word2Vecs which have been debiased using hard debiasing for [gender](https://drive.google.com/file/d/1tXlYtN6C-S-8KTfn5nYZ4KpDOGi6ngCA/view?usp=sharing), [race](https://drive.google.com/file/d/1OM-WyNAg7JZg4GR3pm68kGLGrRLXKeOT/view?usp=sharing), and [religion](https://drive.google.com/file/d/1y5l2M_JdfCCNn3Hm16c_52MnoGJ6BCn7/view?usp=sharing) - All based on w2v_0. 
 3. Word2Vecs which have been debiased using soft debiasing for [gender](https://drive.google.com/file/d/1blijB0tBDaBcZ-ZfW_6-vlZXVtDcwO1k/view?usp=sharing), [race](https://drive.google.com/file/d/15CEOXxGB0ntkBIq5csIZAEP2Ql3YZNkD/view?usp=sharing), and [religion](https://drive.google.com/file/d/1fdrcwg1Y5MVsBU-fvy6ZS_bYSbB__f6l/view?usp=sharing) - All based on w2v_0.
+
+Our vocabularies for bias detection and removal can be found under ./Debiasing/data/vocab.
 
 If you are replicating our results from scratch, you can train your Word2Vecs using ./Debiasing/word2vec.py. Note that this file will generate Word2Vec embeddings for all the corpus files in the folder ./Debiasing/reddit.l2/*
 
