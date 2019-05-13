@@ -6,7 +6,6 @@ from gensim.models.keyedvectors import Word2VecKeyedVectors
 from biasOps import project_onto_subspace
 
 def load_legacy_w2v(w2v_file, dim=50):
-    import ast
     vectors = {}
     with open(w2v_file, 'r') as f:
         for line in f:
