@@ -69,10 +69,10 @@ After these files have been placed in the appropriate locations, you can replica
 
 ## Requirements
 The following python packages are required (Python 2).
-* numpy
-* scipy
-* gensim
-* sklearn
-* pytorch
-* matplotlib
-* jupyter
+* numpy 1.14.5
+* scipy 1.1.0
+* gensim 3.5.0
+* sklearn 0.19.2
+* pytorch 0.4.0
+* matplotlib 2.2.3
+* jupyter 1.0.0
