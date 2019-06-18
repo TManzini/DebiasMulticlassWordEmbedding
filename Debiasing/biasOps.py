@@ -73,6 +73,12 @@ def neutralize_and_equalize(vocab, words, eq_sets, bias_subspace, embedding_dim)
     bias_subspace - subspace of bias from identify_bias_subspace
     embedding_dim - dimensions of the word embeddings
     """
+
+    if bias_subspace.ndim == 1:
+        bias_subspace = np.expand_dims(bias_subspace, 0)
+    elif bias_subspace.ndim != 2:
+        raise ValueError("bias subspace should be either a matrix or vector")
+
     new_vocab = vocab.copy()
     for w in words:
         # get projection onto bias subspace
