@@ -1,10 +1,8 @@
-from matplotlib import pylab
 from scipy import spatial
-from pyvttbl import Anova1way
 import numpy as np
 import itertools
 
-def generateAnalogies(analogyTemplates, keyedVecs):
+def generateAnalogies_parallelogram(analogyTemplates, keyedVecs):
 	expandedAnalogyTemplates = []
 	for A, stereotypes in analogyTemplates.items():
 		for B, _ in analogyTemplates.items():
@@ -27,6 +25,45 @@ def generateAnalogies(analogyTemplates, keyedVecs):
 
 	analogies = sorted(analogies, key=lambda x:-x[0])
 	return analogies
+
+def scoredAnalogyAnswers(a,b,x, keyedVecs, thresh=12.5):
+	words = [w for w in keyedVecs.vocab if np.linalg.norm(np.array(keyedVecs[w])-np.array(keyedVecs[x])) < thresh]
+
+	def cos(a,b,x,y):
+		aVec = np.array(keyedVecs[a])
+		bVec = np.array(keyedVecs[b])
+		xVec = np.array(keyedVecs[x])
+		yVec = np.array(keyedVecs[y])
+		numerator = (aVec-bVec).dot(xVec-yVec)
+		denominator = np.linalg.norm(aVec-bVec)*np.linalg.norm(xVec-yVec)
+		return numerator/(denominator if denominator != 0 else 1e-6)
+
+	return sorted([(cos(a,b,x,y), a,b,x,y) for y in words], reverse=True)
+
+def generateAnalogies(analogyTemplates, keyedVecs):
+	expandedAnalogyTemplates = []
+	for A, stereotypes in analogyTemplates.items():
+		for B, _ in analogyTemplates.items():
+			if(A != B):
+				for stereotype in stereotypes:
+					expandedAnalogyTemplates.append([A, stereotype, B])
+
+	analogies = []
+	outputGroups = []
+	for a,b,x in expandedAnalogyTemplates:
+		outputs = scoredAnalogyAnswers(a,b,x,keyedVecs)
+		formattedOutput = []
+		
+		for score, a_w, b_w, x_w, y_w in outputs:
+			
+			analogy = str(a_w) + " is to " + str(b_w) + " as " + str(x_w) + " is to " + str(y_w)
+			analogyRaw = [a_w, b_w, x_w, y_w]
+			analogies.append([score, analogy, analogyRaw])
+			formattedOutput.append([score, analogy, analogyRaw])
+		outputGroups.append(formattedOutput)
+
+	analogies = sorted(analogies, key=lambda x:-x[0])
+	return analogies, outputGroups
 
 def multiclass_evaluation(embeddings, targets, attributes):
 	targets_eval = []

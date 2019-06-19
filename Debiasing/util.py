@@ -63,6 +63,14 @@ def writeAnalogies(analogies, path):
         f.write(str(score) + "," + str(analogy) + "," + str(raw) + "\n")
     f.close()
 
+def writeGroupAnalogies(groups, path):
+    f = open(path, "w")
+    f.write("Score,Analogy\n")
+    for analogies in groups:
+        for score, analogy, raw in analogies:
+            f.write(str(score) + "," + str(analogy) + "," + str(raw) + "\n")
+    f.close()
+
 def evalTerms(vocab, subspace, terms):
     for term in terms:
         vect = vocab[term]

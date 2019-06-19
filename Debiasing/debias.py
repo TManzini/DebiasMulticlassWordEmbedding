@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 
-from util import write_w2v, writeAnalogies, convert_legacy_to_keyvec, load_legacy_w2v, pruneWordVecs
+from util import write_w2v, writeAnalogies, writeGroupAnalogies, convert_legacy_to_keyvec, load_legacy_w2v, pruneWordVecs
 from biasOps import identify_bias_subspace, neutralize_and_equalize, equalize_and_soften
 from evalBias import generateAnalogies, multiclass_evaluation
 from loader import load_def_sets, load_analogy_templates, load_test_terms, load_eval_terms
@@ -53,15 +53,17 @@ if(args.soft):
                         defSets.values(), subspace, embedding_dim, verbose=args.v)
 
 print "Generating Analogies"
-biasedAnalogies = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(word_vectors))
+biasedAnalogies, biasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(word_vectors))
 if(args.hard):
-    hardDebiasedAnalogies = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_hard_word_vectors))
+    hardDebiasedAnalogies, hardDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_hard_word_vectors))
 if(args.soft):
-    softDebiasedAnalogies = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_soft_word_vectors))
+    softDebiasedAnalogies, softDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_soft_word_vectors))
 
 if(args.w):
     print "Writing biased analogies to disk"
     writeAnalogies(biasedAnalogies, "output/" + outprefix + "_biasedAnalogiesOut.csv")
+    writeGroupAnalogies(biasedAnalogyGroups, "output/" + outprefix + "_biasedAnalogiesOut_grouped.csv")
+
 if(args.v):
     print "Biased Analogies (0-" + str(args.printLimit) + ")"
     for score, analogy, _ in biasedAnalogies[:args.printLimit]:
@@ -71,9 +73,11 @@ if(args.w):
     if(args.hard):
         print "Writing hard debiased analogies to disk"
         writeAnalogies(hardDebiasedAnalogies, "output/" + outprefix + "_hardDebiasedAnalogiesOut.csv")
+        writeGroupAnalogies(hardDebiasedAnalogyGroups, "output/" + outprefix + "_hardDebiasedAnalogiesOut_grouped.csv")
     if(args.soft):
         print "Writing soft debiased analogies to disk"
         writeAnalogies(softDebiasedAnalogies, "output/" + outprefix + "_softDebiasedAnalogiesOut.csv")
+        writeGroupAnalogies(softDebiasedAnalogyGroups, "output/" + outprefix + "_softDebiasedAnalogiesOut_grouped.csv")
 if(args.v):
     if(args.hard):
         print "="*20, "\n\n"
