@@ -41,7 +41,7 @@ word_vectors = pruneWordVecs(word_vectors)
 print "\tEnded with", len(word_vectors)
 
 print "Identifying bias subspace"
-subspace = identify_bias_subspace(word_vectors, defSets, 1, embedding_dim)[0]
+subspace = identify_bias_subspace(word_vectors, defSets, 1, embedding_dim)[:1]
 
 if(args.hard):
     print "Neutralizing and Equalizing"
