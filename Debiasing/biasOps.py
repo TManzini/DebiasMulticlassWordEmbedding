@@ -53,8 +53,9 @@ def identify_bias_subspace(vocab, def_sets, k, embedding_dim):
 
 def project_onto_subspace(vector, subspace):
     v_b = np.zeros_like(vector)
-    for b in subspace:
-        v_b += np.dot(vector.transpose(), b) * b
+    for component in subspace:
+        for b in component:
+            v_b += np.dot(vector.transpose(), b) * b
     return v_b
 
 def calculateDirectBias(vocab, neutral_words, bias_subspace, c=1):

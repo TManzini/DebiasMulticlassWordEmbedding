@@ -17,9 +17,8 @@ parser.add_argument('-soft', action='store_true')
 parser.add_argument('-w', action='store_true')
 parser.add_argument('-v', action='store_true')
 parser.add_argument('-printLimit', type=int, default=500)
+parser.add_argument('-analogies', action="store_true")
 args = parser.parse_args()
-
-
 
 outprefix = args.vocabPath.replace("/", "_").replace("\\", "_").replace(".", "_")
 
@@ -52,44 +51,45 @@ if(args.soft):
     new_soft_word_vectors = equalize_and_soften(word_vectors, neutral_words,
                         defSets.values(), subspace, embedding_dim, verbose=args.v)
 
-print "Generating Analogies"
-biasedAnalogies, biasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(word_vectors))
-if(args.hard):
-    hardDebiasedAnalogies, hardDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_hard_word_vectors))
-if(args.soft):
-    softDebiasedAnalogies, softDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_soft_word_vectors))
-
-if(args.w):
-    print "Writing biased analogies to disk"
-    writeAnalogies(biasedAnalogies, "output/" + outprefix + "_biasedAnalogiesOut.csv")
-    writeGroupAnalogies(biasedAnalogyGroups, "output/" + outprefix + "_biasedAnalogiesOut_grouped.csv")
-
-if(args.v):
-    print "Biased Analogies (0-" + str(args.printLimit) + ")"
-    for score, analogy, _ in biasedAnalogies[:args.printLimit]:
-        print score, analogy
-
-if(args.w):
+if(args.analogies):
+    print "Generating Analogies"
+    biasedAnalogies, biasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(word_vectors))
     if(args.hard):
-        print "Writing hard debiased analogies to disk"
-        writeAnalogies(hardDebiasedAnalogies, "output/" + outprefix + "_hardDebiasedAnalogiesOut.csv")
-        writeGroupAnalogies(hardDebiasedAnalogyGroups, "output/" + outprefix + "_hardDebiasedAnalogiesOut_grouped.csv")
+        hardDebiasedAnalogies, hardDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_hard_word_vectors))
     if(args.soft):
-        print "Writing soft debiased analogies to disk"
-        writeAnalogies(softDebiasedAnalogies, "output/" + outprefix + "_softDebiasedAnalogiesOut.csv")
-        writeGroupAnalogies(softDebiasedAnalogyGroups, "output/" + outprefix + "_softDebiasedAnalogiesOut_grouped.csv")
-if(args.v):
-    if(args.hard):
-        print "="*20, "\n\n"
-        print "Hard Debiased Analogies (0-" + str(args.printLimit) + ")"
-        for score, analogy, _ in hardDebiasedAnalogies[:args.printLimit]:
+        softDebiasedAnalogies, softDebiasedAnalogyGroups = generateAnalogies(analogyTemplates, convert_legacy_to_keyvec(new_soft_word_vectors))
+
+    if(args.w):
+        print "Writing biased analogies to disk"
+        writeAnalogies(biasedAnalogies, "output/" + outprefix + "_biasedAnalogiesOut.csv")
+        writeGroupAnalogies(biasedAnalogyGroups, "output/" + outprefix + "_biasedAnalogiesOut_grouped.csv")
+
+    if(args.v):
+        print "Biased Analogies (0-" + str(args.printLimit) + ")"
+        for score, analogy, _ in biasedAnalogies[:args.printLimit]:
             print score, analogy
-    if(args.soft):
-        print "="*20, "\n\n"
-        print "Soft Debiased Analogies (0-" + str(args.printLimit) + ")"
-        for score, analogy, _ in softDebiasedAnalogies[:args.printLimit]:
-            print score, analogy
-    
+
+    if(args.w):
+        if(args.hard):
+            print "Writing hard debiased analogies to disk"
+            writeAnalogies(hardDebiasedAnalogies, "output/" + outprefix + "_hardDebiasedAnalogiesOut.csv")
+            writeGroupAnalogies(hardDebiasedAnalogyGroups, "output/" + outprefix + "_hardDebiasedAnalogiesOut_grouped.csv")
+        if(args.soft):
+            print "Writing soft debiased analogies to disk"
+            writeAnalogies(softDebiasedAnalogies, "output/" + outprefix + "_softDebiasedAnalogiesOut.csv")
+            writeGroupAnalogies(softDebiasedAnalogyGroups, "output/" + outprefix + "_softDebiasedAnalogiesOut_grouped.csv")
+    if(args.v):
+        if(args.hard):
+            print "="*20, "\n\n"
+            print "Hard Debiased Analogies (0-" + str(args.printLimit) + ")"
+            for score, analogy, _ in hardDebiasedAnalogies[:args.printLimit]:
+                print score, analogy
+        if(args.soft):
+            print "="*20, "\n\n"
+            print "Soft Debiased Analogies (0-" + str(args.printLimit) + ")"
+            for score, analogy, _ in softDebiasedAnalogies[:args.printLimit]:
+                print score, analog
+        
 if(args.w):
     print "Writing data to disk"
     write_w2v("output/" + outprefix + "_" + args.mode + "_biasedEmbeddingsOut.w2v", word_vectors)
