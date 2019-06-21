@@ -1,7 +1,9 @@
 {
 	"definite_sets":[
 		["black", "caucasian", "asian"],
-        ["africa", "america", "asia"]
+		["african", "caucasian", "asian"],
+		["black", "white", "asian"],
+		["africa", "america", "asia"]
     ],
 	"analogy_templates":
 	{
@@ -13,7 +15,7 @@
 	}, 
 	"eval_targets":[
 		["black", "caucasian", "asian"],
-        ["africa", "america", "asia"]
+		["africa", "america", "asia"]
 	], 
 	"testTerms":["chair", "house", "smart", "criminal", "executive", "farmer"]
 }
