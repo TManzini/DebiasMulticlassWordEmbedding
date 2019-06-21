@@ -8,7 +8,7 @@ def normalize(word_vectors):
     for k, v in word_vectors.items():
         word_vectors[k] = v / np.linalg.norm(v)
 
-def identify_bias_subspace(vocab, def_sets, k, embedding_dim):
+def identify_bias_subspace(vocab, def_sets, subspace_dim, embedding_dim):
     """
     Similar to bolukbasi's implementation at
     https://github.com/tolga-b/debiaswe/blob/master/debiaswe/debias.py
@@ -16,7 +16,7 @@ def identify_bias_subspace(vocab, def_sets, k, embedding_dim):
     vocab - dictionary mapping words to embeddings
     def_sets - sets of words that represent extremes? of the subspace
             we're interested in (e.g. man-woman, boy-girl, etc. for binary gender)
-    k - number of vectors defining the subspace
+    subspace_dim - number of vectors defining the subspace
     embedding_dim - dimensions of the word embeddings
     """
     # calculate means of defining sets
@@ -46,7 +46,7 @@ def identify_bias_subspace(vocab, def_sets, k, embedding_dim):
 
     matrix = np.concatenate(matrix)
 
-    pca = PCA(n_components=k)
+    pca = PCA(n_components=subspace_dim)
     pca.fit(matrix)
 
     return pca.components_
@@ -133,8 +133,63 @@ def equalize_and_soften(vocab, words, eq_sets, bias_subspace, embedding_dim, l=0
     Neutrals = torch.tensor([vocab[w] for w in words]).float().t()
 
     Words = torch.tensor(vocabVectors).float().t()
+
+    # perform SVD on W to reduce memory and computational costs
+    # based on suggestions in supplementary material of Bolukbasi et al.
+    u, s, _ = torch.svd(Words)
+    s = torch.diag(s)
+
+    # precompute
+    t1 = s.mm(u.t())
+    t2 = u.mm(s)
+
     Transform = torch.randn(embedding_dim, embedding_dim).float()
-    BiasSpace = torch.tensor(bias_subspace).view(embedding_dim, 1).float()
+    BiasSpace = torch.tensor(bias_subspace).view(embedding_dim, -1).float()
+
+    Neutrals.requires_grad = False
+    Words.requires_grad = False
+    BiasSpace.requires_grad = False
+    Transform.requires_grad = True
+
+    epochs = 10
+    optimizer = torch.optim.SGD([Transform], lr=0.000001, momentum=0.0)
+
+    for i in range(0, epochs):
+        TtT = torch.mm(Transform.t(), Transform)
+        norm1 = (t1.mm(TtT - torch.eye(embedding_dim)).mm(t2)).norm(p=2)
+
+        norm2 = (Neutrals.t().mm(TtT).mm(BiasSpace)).norm(p=2)
+
+        loss = norm1 + l * norm2
+        norm1 = None
+        norm2 = None
+
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+        
+        if(verbose):
+            print("Loss @ Epoch #" + str(i) + ":", loss)
+
+    if(verbose):
+        print("Optimization Completed, normalizing vector transform")
+
+    debiasedVectors = {}
+    for i, w in enumerate(Words.t()):
+        transformedVec = torch.mm(Transform, w.view(-1, 1))
+        debiasedVectors[vocabIndex[i]] = ( transformedVec / transformedVec.norm(p=2) ).detach().numpy().flatten()
+
+    return debiasedVectors
+
+def equalize_and_soften_old(vocab, words, eq_sets, bias_subspace, embedding_dim, l=0.2, verbose=True):
+    vocabIndex, vocabVectors = zip(*vocab.items())
+    vocabIndex = {i:label for i, label in enumerate(vocabIndex)}
+
+    Neutrals = torch.tensor([vocab[w] for w in words]).float().t()
+
+    Words = torch.tensor(vocabVectors).float().t()
+    Transform = torch.randn(embedding_dim, embedding_dim).float()
+    BiasSpace = torch.tensor(bias_subspace).view(embedding_dim, -1).float()
 
     Neutrals.requires_grad = False
     Words.requires_grad = False
