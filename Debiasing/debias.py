@@ -16,6 +16,7 @@ parser.add_argument('-hard', action='store_true')
 parser.add_argument('-soft', action='store_true')
 parser.add_argument('-w', action='store_true')
 parser.add_argument('-v', action='store_true')
+parser.add_argument('-k', type=int, default=1)
 parser.add_argument('-printLimit', type=int, default=500)
 parser.add_argument('-analogies', action="store_true")
 args = parser.parse_args()
@@ -40,7 +41,8 @@ word_vectors = pruneWordVecs(word_vectors)
 print "\tEnded with", len(word_vectors)
 
 print "Identifying bias subspace"
-subspace = identify_bias_subspace(word_vectors, defSets, 1, embedding_dim)[:1]
+subspace = identify_bias_subspace(word_vectors, defSets, args.k, embedding_dim)[:args.k]
+print(len(subspace))
 
 if(args.hard):
     print "Neutralizing and Equalizing"
