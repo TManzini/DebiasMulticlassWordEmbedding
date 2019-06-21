@@ -42,7 +42,6 @@ print("\tEnded with", len(word_vectors))
 
 print("Identifying bias subspace")
 subspace = identify_bias_subspace(word_vectors, defSets, args.k, embedding_dim)[:args.k]
-print(len(subspace))
 
 if(args.hard):
     print("Neutralizing and Equalizing")
