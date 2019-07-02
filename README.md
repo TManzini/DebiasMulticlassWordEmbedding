@@ -16,7 +16,7 @@ If you would like to replicate our results from scratch, you must download the f
 
 If you would like to replicate our results without training your own Word2Vec embeddings, we provide pretrained Word2Vec embeddings. Note that the results in the paper were on w2v_0.
 1. Pretrained Baseline Word2Vecs [w2v_0](https://drive.google.com/file/d/1IJdGfnKNaBLHP9hk0Ns7kReQwo_jR1xx/view?usp=sharing), [w2v_1](https://drive.google.com/file/d/1gDXFBFcOJuRTrTveBYnW5vH0uSSATwp_/view?usp=sharing), [w2v_2](https://drive.google.com/file/d/102grp_w69V91OuLIgY9aEXWbjEWAx3qD/view?usp=sharing), [w2v_3](https://drive.google.com/file/d/1IO6gucgEVxxzNPKrdARO6KDYbBBIwBjM/view?usp=sharing), [w2v_4](https://drive.google.com/file/d/1IhdRfHg373OYP_c-wsxEddxWIRpIlpNH/view?usp=sharing) 
-2. Word2Vecs which have been debiased using hard debiasing for [gender](https://drive.google.com/file/d/1tXlYtN6C-S-8KTfn5nYZ4KpDOGi6ngCA/view?usp=sharing), [race](https://drive.google.com/file/d/1OM-WyNAg7JZg4GR3pm68kGLGrRLXKeOT/view?usp=sharing), and [religion](https://drive.google.com/file/d/1y5l2M_JdfCCNn3Hm16c_52MnoGJ6BCn7/view?usp=sharing) - All based on w2v_0. 
+2. Word2Vecs which have been debiased using hard debiasing for [gender](https://drive.google.com/open?id=1UwihHVAP7IykOQDPrT4BOFOlgKqJUU-l), [race](https://drive.google.com/open?id=1at-OZonjKtb-Z1MvvLX3embAbZyfAmwX), and [religion](https://drive.google.com/open?id=13g_3ci859OS-ZkfRuMd6qdfDXe4bTQXP) - All based on w2v_0. 
 3. Word2Vecs which have been debiased using soft debiasing for [gender](https://drive.google.com/file/d/1JAGTYfH9I0pZ-UA8BdJq-AmswaXovRuM/view?usp=sharing), [race](https://drive.google.com/file/d/1-2JYInfa4vYqqniqMHTmeVCR0h3dgQ2T/view?usp=sharing), and [religion](https://drive.google.com/file/d/11g5u1S8TW6S7hELlM9-MIBrPbsqobqaq/view?usp=sharing) - All based on w2v_0.
 
 If you are replicating our results from scratch, you can train your Word2Vecs using ./Debiasing/word2vec.py. Note that this file will generate Word2Vec embeddings for all the corpus files in the folder ./Debiasing/reddit.l2/*
@@ -27,21 +27,23 @@ Once you have trained your word embeddings you can evaluate you word embeddings 
 * mode : The type of social bias data that should be used when performing analogy generation and debiasing
 * -hard : If this flag is set hard debiasing will be performed
 * -soft : If this flag is used then soft debiasinng will be performed
+* -k : An integer which denotes how many principal components that are used to define the bias subspace (Defaults to 1).
 * -w : If this flag is used then all the output of the analogy tasks, the debiased Word2Vecs and the MAC statistics will be written to disk in an folder named "./output"
 * -v : If this flag is used then the debias script will execute in verbose mode
+* -analogies : If this flag is used then analogies will be generated.
 * -printLimit : An integer which defines how many of each type of analogy will be printed when executing in verbose mode
 
 Our vocabularies for bias detection and removal can be found under ./Debiasing/data/vocab.
 
 Example commands are included below for reference
 
-This commmand performs hard religious debiasing based on attributes in the passed vocab file. Verbose mode is used and 100 analogies are printed for each embedding space (biased/debiased)
+This commmand performs hard religious debiasing based on attributes in the passed vocab file. Verbose mode is used and the first 2 PCA components are used for debiasing
 ```
-python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/vocab/religion_attributes_optm.json' attribute -v -hard -printLimit 100
+python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/vocab/religion_attributes_optm.json' attribute -v -hard -k 2
 ```
 This commmand performs hard & soft gender debiasing based on roles in the passed vocab file. Verbose mode is used and 500 analogies are printed for each embedding space (biased/hard debiased/soft debiased)
 ```
-python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/vocab/gender_attributes_optm.json' role -v -hard -soft -printLimit 500
+python debias.py 'data/w2vs/reddit.US.txt.tok.clean.cleanedforw2v.w2v' 'data/vocab/gender_attributes_optm.json' role -v -hard -soft -printLimit 500 -analogies
 ```
 
 ## Cluster Bias Analysis
@@ -76,3 +78,14 @@ The following python packages are required (Python 2).
 * pytorch 0.4.0
 * matplotlib 2.2.3
 * jupyter 1.0.0
+
+## Citing
+If you found this repository or our paper helpful please consider citing us with this bibtex.  
+```
+@article{manzini2019black,
+  title={Black is to Criminal as Caucasian is to Police: Detecting and Removing Multiclass Bias in Word Embeddings},
+  author={Manzini, Thomas and Lim, Yao Chong and Tsvetkov, Yulia and Black, Alan W},
+  journal={arXiv preprint arXiv:1904.04047},
+  year={2019}
+}
+```
