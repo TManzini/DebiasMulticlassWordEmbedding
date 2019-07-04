@@ -12,7 +12,7 @@ The repository has three main components.
 
 In order to run these files several data files need to be downloaded. 
 If you would like to replicate our results from scratch, you must download the following files.
-1. The Reddit.l2 Corpus
+1. [The Reddit.l2 Corpus](http://cl.haifa.ac.il/projects/L2/)
 
 If you would like to replicate our results without training your own Word2Vec embeddings, we provide pretrained Word2Vec embeddings. Note that the results in the paper were on w2v_0.
 1. Pretrained Baseline Word2Vecs [w2v_0](https://drive.google.com/file/d/1IJdGfnKNaBLHP9hk0Ns7kReQwo_jR1xx/view?usp=sharing), [w2v_1](https://drive.google.com/file/d/1gDXFBFcOJuRTrTveBYnW5vH0uSSATwp_/view?usp=sharing), [w2v_2](https://drive.google.com/file/d/102grp_w69V91OuLIgY9aEXWbjEWAx3qD/view?usp=sharing), [w2v_3](https://drive.google.com/file/d/1IO6gucgEVxxzNPKrdARO6KDYbBBIwBjM/view?usp=sharing), [w2v_4](https://drive.google.com/file/d/1IhdRfHg373OYP_c-wsxEddxWIRpIlpNH/view?usp=sharing) 
